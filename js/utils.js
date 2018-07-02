@@ -181,7 +181,52 @@ var Util = (function () {
      * @param {String} className
      */
     Util.prototype.hasClass = function (target, className) {
-        return $(target).hasClass(className);
+        if (!target || className === "") {
+            return false;
+        }
+
+        return (target.getAttribute("class") === className);
+    };
+
+    /**
+     *
+     * @returns {{isWindowsChrome: boolean, isWindowsFF: boolean, isIe: boolean, isEdge: boolean, isMacChrome: boolean, isMacFF: boolean, isSafari: boolean}}
+     */
+    Util.prototype.getBrowserInfo = function () {
+        var userAgent = navigator.userAgent,
+            result = {
+                isWinChrome: false,
+                isWinFF: false,
+                isIe: false,
+                isEdge: false,
+                isMacChrome: false,
+                isMacFF: false,
+                isSafari: false
+            };
+
+        if (userAgent) {
+            if (userAgent.indexOf("Windows") !== -1) {
+                if (userAgent.indexOf("Chrome") !== -1) {
+                    result.isWinChrome = true;
+                } else if (userAgent.indexOf("Firefox") !== -1) {
+                    result.isWinFF = true;
+                } else if (userAgent.indexOf("Trident") !== -1) {
+                    result.isIe = true;
+                } else if (userAgent.indexOf("Edge") !== -1) {
+                    result.isEdge = true;
+                }
+            } else if (userAgent.indexOf("Macintosh") !== -1) {
+                if (userAgent.indexOf("Chrome") !== -1) {
+                    result.isMacChrome = true;
+                } else if (userAgent.indexOf("Firefox") !== -1) {
+                    result.isMacFF = true;
+                } else if (userAgent.indexOf("Safari") !== -1) {
+                    result.isSafari = true;
+                }
+            }
+        }
+
+        return result;
     };
 
     return new Util();
